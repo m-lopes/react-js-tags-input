@@ -1,0 +1,180 @@
+swagger: "2.0"
+info:
+  description: "API para o desafio de tags input."
+  version: "1.0.0"
+  title: "Desafio Tags Input"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "contato@rarolabs.com.br"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "projetos.rarolabs.com.br"
+basePath: "/v1"
+tags:
+- name: "mailing-list"
+  description: "Rotas de crud para cadastro de mailing list, para o desafio de tags input. Como o requisito do desafio se limita ao tagsInput, somente o campo 'e-mail' deverá ser obrigatório"
+schemes:
+- "https"
+- "http"
+paths:
+  /mailing-lists:
+    get:
+      tags:
+        - "mailing-list"
+      summary: Rota de listagem das mailing lists
+      description: Rota de listagem das mailing lists
+      produces:
+        - "application/json"
+        - "application/xml"
+      parameters:
+      - name: "token"
+        in: "header"
+        description: "Chave de autenticação do usuário. A princípio, qualuqer uuid poderá ser utilizado como token do usuário"
+        required: true
+        type: "string"
+        format: uuid
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/MailingList"
+        "400":
+          description: "Invalid status value"
+
+    post:
+      tags:
+        - "mailing-list"
+      summary: Criação de uma nova mailing list.
+      description: Criação de uma nova mailing list.
+      produces:
+        - "application/json"
+        - "application/xml"
+      parameters:
+      - name: "token"
+        in: "header"
+        description: "Chave de autenticação do usuário. A princípio, qualuqer uuid poderá ser utilizado como token do usuário"
+        required: true
+        type: "string"
+        format: uuid
+      responses:
+        "201":
+          description: "Nova mailing list criada com sucesso"
+        "400":
+          description: "Invalid status value"
+  /mailing-lists/{id}:
+    get:
+      tags:
+        - "mailing-list"
+      summary: Retorna uma mailing list, identificada por seu id
+      description: Retorna uma mailing list, identificada por seu id
+      produces:
+        - "application/json"
+        - "application/xml"
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: id da mailing list a ser retornada
+        type: string
+        format: uuid
+      - name: "token"
+        in: "header"
+        description: "Chave de autenticação do usuário. A princípio, qualuqer uuid poderá ser utilizado como token do usuário"
+        required: true
+        type: "string"
+        format: uuid
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/MailingList"
+        "400":
+          description: "Invalid status value"
+
+    patch:
+      tags:
+        - "mailing-list"
+      summary: Atualiza a mailing list
+      description: Atualiza a mailing list
+      produces:
+        - "application/json"
+        - "application/xml"
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: id da mailing list a ser retornada
+        type: string
+        format: uuid
+      - name: "token"
+        in: "header"
+        description: "Chave de autenticação do usuário. A princípio, qualuqer uuid poderá ser utilizado como token do usuário"
+        required: true
+        type: "string"
+        format: uuid
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/MailingList"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/MailingList"
+        "400":
+          description: "Invalid status value"
+
+    delete:
+      tags:
+        - "mailing-list"
+      summary: Atualiza a mailing list
+      description: Atualiza a mailing list
+      produces:
+        - "application/json"
+        - "application/xml"
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: id da mailing list a ser retornada
+        type: string
+        format: uuid
+      - name: "token"
+        in: "header"
+        description: "Chave de autenticação do usuário. A princípio, qualuqer uuid poderá ser utilizado como token do usuário"
+        required: true
+        type: "string"
+        format: uuid
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/MailingList"
+        "400":
+          description: "Invalid status value"
+
+definitions:
+  MailingList:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      subject:
+        type: string
+        x-faker: lorem.sentence
+      content:
+        type: string
+        x-faker: lorem.paragraph
+      emails:
+        type: array
+        items: 
+          type: string
+          format: email
+          x-faker: internet.email
+    required:
+      - emails
